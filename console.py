@@ -6,6 +6,7 @@ import cmd
 import models
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -54,19 +55,23 @@ class HBNBCommand(cmd.Cmd):
         args_split = args.split()
         cls_name = args_split[0]
         cls_id = args_split[1]
-        cls_nameId = cls_name + "." + cls_name
-        all_objs = FileStorage.storage.all()
+        key = cls_name + "." + cls_id
 
         if (len(args_split) == 0):
             print("** class name missing **")
-        elif (cls_name != "BaseModel"):
-            print("** class doesn't exist **")
-        elif (cls_name == "BaseModel" and len(args_split) < 2):
-            print("** instance id missing **")
-        elif():
-            pass
         else:
-            print(eval(cls_id))
+            if ((cls_name == "BaseModel" and len(args_split) < 2)):
+                print("** instance id missing **")
+            elif (cls_name != "BaseModel"):
+                print("** class doesn't exist **")
+            else:
+                all_objs = storage.all()
+                print(all_objs[key])
+                # for key, value in storage.all().items():
+                #     if cls_id == value.id:
+                #         print(value)
+                #         return
+                # print("** no instance found **")
 
 
 if __name__ == '__main__':
