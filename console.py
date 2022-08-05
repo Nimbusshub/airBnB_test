@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-"""An interactive shell?"""
+"""An interactive shell"""
 
 import cmd
 import models
@@ -54,8 +54,6 @@ class HBNBCommand(cmd.Cmd):
         """
         args_split = args.split()
         cls_name = args_split[0]
-        cls_id = args_split[1]
-        key = cls_name + "." + cls_id
 
         if (len(args_split) == 0):
             print("** class name missing **")
@@ -65,8 +63,15 @@ class HBNBCommand(cmd.Cmd):
             elif (cls_name != "BaseModel"):
                 print("** class doesn't exist **")
             else:
-                all_objs = storage.all()
-                print(all_objs[key])
+                try:
+                    cls_id = args_split[1]
+                    key = cls_name + "." + cls_id
+                    all_objs = storage.all()
+                    print(all_objs[key])
+
+                except KeyError:
+                    print("** no instance found **")
+
                 # for key, value in storage.all().items():
                 #     if cls_id == value.id:
                 #         print(value)
