@@ -46,7 +46,7 @@ class HBNBCommand(cmd.Cmd):
             print(objInstance.id)
 
     def do_show(self, args):
-        """Prints the string representation of an instance 
+        """Prints the string representation of an instance
             based on the class name and id
 
             Args:
@@ -101,6 +101,7 @@ class HBNBCommand(cmd.Cmd):
                     key = cls_name + "." + cls_id
                     all_objs = storage.all()
                     del all_objs[key]
+                    storage.save()
 
                 except KeyError:
                     print("** no instance found **")
@@ -138,6 +139,84 @@ class HBNBCommand(cmd.Cmd):
         # args_split = args.split()
 
         # if args_split[0] != "BaseModel":
+
+    def do_update(self, args):
+        """Updates an instance based on the class name and id
+        by adding or updating attribute
+         Args:
+            args (line): command line arguement
+        """
+
+        # if not args:
+        #     print("** class name missing **")
+        #     return False
+        # args_split = args.split()
+        # if args_split[0] != "BaseModel":
+        #     print("** class doesn't exist **")
+        #     return False
+        # elif
+        # all_objs = storage.all()
+        # args_split = args.split()
+        # len_args = len(args_split)
+        # if len_args == 0:
+        #     print("** class name missing **")
+        #     return False
+        # else:
+        #     cls_name = args_split[0]
+        #     if (cls_name != "BaseModel"):
+        #         print("** class doesn't exist **")
+        #         return False
+        #     else:
+        #         try:
+        #             cls_id = args_split[1]
+        #             key = cls_name + "." + cls_id
+        #             try:
+        #                 unused = all_objs[key]
+        #             except KeyError:
+        #                 print("** no instance found **")
+        #                 return False
+        #         except IndexError:
+        #             print('** instance id missing **')
+        #             return False
+        #         if len_args < 3:
+        #             print("** attribute name missing **")
+        #             return False
+        #         elif len_args < 4:
+        #             print("** value missing **")
+        #             return False
+
+        # key = cls_name + "." + cls_id
+        # if len_args > 2:
+        #     if len_args > 3:
+        #         setattr(storage.all()[key], args_split[2], args_split[3])
+        #         storage.all()[key].save()
+        #     else:
+        #         return
+
+        def do_update(self, args):
+            """ Updates an instance based on the class name and id """
+            args = args.split()
+            if len(args) == 0:
+                print("** class name missing **")
+                return False
+            if args[0] != 'BaseModel':
+                if len(args) > 1:
+                    key = args[0] + '.' + args[1]
+                    if key in storage.all():
+                        if len(args) > 2:
+                            if len(args) > 3:
+                                setattr(storage.all()[key], args[2], args[3])
+                                storage.all()[key].save()
+                            else:
+                                print("** value missing **")
+                        else:
+                            print("** attribute name missing **")
+                    else:
+                        print("** no instance found **")
+                else:
+                    print("** instance id missing **")
+            else:
+                print("** class doesn't exist **")
 
 
 if __name__ == '__main__':
