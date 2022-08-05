@@ -29,8 +29,8 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """Creates a new instance of BaseModel
 
-            Args:
-                arg(line):  BaseModel command
+        Args:
+            arg(line):  BaseModel command
         """
         args_split = args.split()
 
@@ -53,11 +53,11 @@ class HBNBCommand(cmd.Cmd):
                 arg(line)
         """
         args_split = args.split()
-        cls_name = args_split[0]
 
         if (len(args_split) == 0):
             print("** class name missing **")
         else:
+            cls_name = args_split[0]
             if ((cls_name == "BaseModel" and len(args_split) < 2)):
                 print("** instance id missing **")
             elif (cls_name != "BaseModel"):
@@ -77,6 +77,67 @@ class HBNBCommand(cmd.Cmd):
                 #         print(value)
                 #         return
                 # print("** no instance found **")
+
+    def do_destroy(self, args):
+        """Destroy the string representation of an instance
+            based on the class name and id
+
+            Args:
+                arg(line)
+        """
+        args_split = args.split()
+
+        if (len(args_split) == 0):
+            print("** class name missing **")
+        else:
+            cls_name = args_split[0]
+            if ((cls_name == "BaseModel" and len(args_split) < 2)):
+                print("** instance id missing **")
+            elif (cls_name != "BaseModel"):
+                print("** class doesn't exist **")
+            else:
+                try:
+                    cls_id = args_split[1]
+                    key = cls_name + "." + cls_id
+                    all_objs = storage.all()
+                    del all_objs[key]
+
+                except KeyError:
+                    print("** no instance found **")
+
+    def do_all(self, args):
+        """Prints all string representation of all instances based
+        or not on the class name
+
+        Args:
+            args (line): command line arguement
+        """
+
+        all_objs = storage.all()
+        obj_list = []
+        if len(args) == 0:
+            for key in all_objs.keys():
+                obj_list.append(str(all_objs[key]))
+            print(obj_list)
+
+        else:
+            args_split = args.split()
+            if len(args_split) == 1:
+                cls_name = args_split[0]
+                if cls_name != 'BaseModel':
+                    print("** class doesn't exist **")
+                else:
+                    for key, value in all_objs.items():
+                        key_split = key.split('.')
+                        if cls_name == key_split[0]:
+                            obj_list.append(str(all_objs[key]))
+                    print(obj_list)
+
+        # all_objs = storage.all()
+        # obj_list = []
+        # args_split = args.split()
+
+        # if args_split[0] != "BaseModel":
 
 
 if __name__ == '__main__':
